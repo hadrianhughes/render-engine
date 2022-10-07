@@ -1,20 +1,34 @@
 import { CANVAS_HEIGHT, SCREEN_INCREMENT } from './index'
 
 export type Vector2D = [number, number]
+export type Vector3D = [number, number, number]
 
-export type Transformation = (v: Vector2D) => Vector2D
+export type Transformation = (v: Vector3D) => Vector3D
 
-export const unitSquare: Vector2D[] = [[0,0], [0,1], [1,1], [1,0]]
+export const unitSquare: Vector3D[] = [[0,0,0], [0,1,0], [1,1,0], [1,0,0]]
 
-export const scale = (ax: number, ay: number) => ([x, y]: Vector2D): Vector2D => [ax * x, ay * y]
+export const scale = (ax: number, ay: number, az: number): Transformation => ([x, y, z]) => [ax * x, ay * y, az * z]
 
-export const translate = ([tx, ty]: Vector2D) => ([x, y]: Vector2D): Vector2D => [x + tx, y + ty]
+export const translate = ([tx, ty, tz]: Vector3D): Transformation => ([x, y, z]) => [x + tx, y + ty, z + tz]
 
-export const shearX = (l: number) => ([x, y]: Vector2D): Vector2D => [x + y*l, y]
-export const shearY = (l: number) => ([x, y]: Vector2D): Vector2D => [x, x*l + y]
+export const rotateX = (rads: number): Transformation => ([x, y, z]) => [
+  x,
+  y * Math.cos(rads) - z*Math.sin(rads),
+  y * Math.sin(rads) + z*Math.cos(rads),
+]
 
-export const rotate = (rads: number) => ([x, y]: Vector2D): Vector2D => [x*Math.cos(rads) - y*Math.sin(rads), x*Math.sin(rads) + y*Math.cos(rads)]
+export const rotateY = (rads: number): Transformation => ([x, y, z]) => [
+  x * Math.cos(rads) + z*Math.sin(rads),
+  y,
+  z * Math.cos(rads) - x*Math.sin(rads),
+]
 
-export const planeToScreen = ([gx, gy]: Vector2D): Vector2D => [gx * SCREEN_INCREMENT, CANVAS_HEIGHT - gy * SCREEN_INCREMENT]
+export const rotateZ = (rads: number): Transformation => ([x, y, z]) => [
+  x * Math.cos(rads) - y*Math.sin(rads),
+  x * Math.sin(rads) + y*Math.cos(rads),
+  z,
+]
+
+export const planeToScreen = ([gx, gy, gz]: Vector3D): Vector3D => [gx * SCREEN_INCREMENT, CANVAS_HEIGHT - gy * SCREEN_INCREMENT, gz * SCREEN_INCREMENT]
 
 export const compose = (...ts: Transformation[]): Transformation => ts.reduce((acc, _t) => v => _t(acc(v)), v => v)
