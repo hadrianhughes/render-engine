@@ -1,4 +1,4 @@
-import { CANVAS_HEIGHT, SCREEN_INCREMENT } from './render'
+import { CANVAS_HEIGHT, CANVAS_WIDTH, SCREEN_INCREMENT } from './render'
 
 export type Vector2D = [number, number]
 export type Vector3D = [number, number, number]
@@ -29,6 +29,10 @@ export const rotateZ = (rads: number): Transformation => ([x, y, z]) => [
   z,
 ]
 
-export const planeToScreen = ([gx, gy, gz]: Vector3D): Vector3D => [gx * SCREEN_INCREMENT, CANVAS_HEIGHT - gy * SCREEN_INCREMENT, gz * SCREEN_INCREMENT]
+export const planeToScreen = ([gx, gy, gz]: Vector3D): Vector3D => [
+  CANVAS_WIDTH / 2 + gx * SCREEN_INCREMENT,
+  CANVAS_HEIGHT / 2 - gy * SCREEN_INCREMENT,
+  gz * SCREEN_INCREMENT,
+]
 
 export const compose = (...ts: Transformation[]): Transformation => ts.reduce((acc, _t) => v => _t(acc(v)), v => v)
