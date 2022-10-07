@@ -13,6 +13,8 @@ canvas.height = CANVAS_HEIGHT
 
 type Vector2D = [number, number]
 
+type Transformation = (v: Vector2D) => Vector2D
+
 const unitSquare: Vector2D[] = [[0,0], [0,1], [1,1], [1,0]]
 
 const scale = (ax: number, ay: number) => ([x, y]: Vector2D): Vector2D => [ax * x, ay * y]
@@ -26,13 +28,18 @@ const rotate = (rads: number) => ([x, y]: Vector2D): Vector2D => [x*Math.cos(rad
 
 const planeToScreen = ([gx, gy]: Vector2D): Vector2D => [gx * SCREEN_INCREMENT, CANVAS_HEIGHT - gy * SCREEN_INCREMENT]
 
-const vertices = unitSquare
-  .map(scale(10, 10))
-  .map(shearX(2))
-  .map(shearY(1))
-  .map(rotate(Math.PI / 6))
-  .map(translate([gridWidth / 2 - 5, gridHeight / 2 - 5]))
-  .map(planeToScreen)
+const compose = (...ts: Transformation[]): Transformation => ts.reduce((acc, _t) => v => _t(acc(v)), v => v)
+
+const transform = compose(
+  scale(10, 10),
+  shearX(2),
+  shearY(1),
+  rotate(Math.PI / 6),
+  translate([gridWidth / 2 - 5, gridHeight / 2 - 5]),
+  planeToScreen,
+)
+
+const vertices = unitSquare.map(transform)
 
 ctx.fillStyle = 'blue'
 ctx.beginPath()
