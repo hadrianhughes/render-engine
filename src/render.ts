@@ -22,6 +22,7 @@ export const renderPolygon = (ps: Vector3D[]) => {
   ctx.beginPath()
   ctx.moveTo(ps[0][0], ps[0][1])
   ps.slice(1).forEach(([x, y]) => ctx.lineTo(x, y))
+  ctx.lineTo(ps[0][0], ps[0][1])
   ctx.closePath()
   ctx.fill()
 }
