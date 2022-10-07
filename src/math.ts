@@ -3,6 +3,8 @@ import { CANVAS_HEIGHT, CANVAS_WIDTH, SCREEN_INCREMENT, FOCAL_DIST } from './ren
 export type Vector2D = [number, number]
 export type Vector3D = [number, number, number]
 
+export type Polygon = Vector3D[]
+
 export type Transformation = (v: Vector3D) => Vector3D
 
 export const unitSquare: Polygon = [[0,0,1], [0,1,1], [1,1,1], [1,0,1]]
