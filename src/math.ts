@@ -1,4 +1,4 @@
-import { CANVAS_HEIGHT, SCREEN_INCREMENT } from './index'
+import { CANVAS_HEIGHT, SCREEN_INCREMENT } from './render'
 
 export type Vector2D = [number, number]
 export type Vector3D = [number, number, number]
