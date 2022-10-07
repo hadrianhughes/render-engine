@@ -19,12 +19,17 @@ const scale = (ax: number, ay: number) => ([x, y]: Vector2D): Vector2D => [ax * 
 
 const translate = ([tx, ty]: Vector2D) => ([x, y]: Vector2D): Vector2D => [x + tx, y + ty]
 
+const shearX = (l: number) => ([x, y]: Vector2D): Vector2D => [x + y*l, y]
+const shearY = (l: number) => ([x, y]: Vector2D): Vector2D => [x, x*l + y]
+
 const rotate = (rads: number) => ([x, y]: Vector2D): Vector2D => [x*Math.cos(rads) - y*Math.sin(rads), x*Math.sin(rads) + y*Math.cos(rads)]
 
 const planeToScreen = ([gx, gy]: Vector2D): Vector2D => [gx * SCREEN_INCREMENT, CANVAS_HEIGHT - gy * SCREEN_INCREMENT]
 
 const vertices = unitSquare
   .map(scale(10, 10))
+  .map(shearX(2))
+  .map(shearY(1))
   .map(rotate(Math.PI / 6))
   .map(translate([gridWidth / 2 - 5, gridHeight / 2 - 5]))
   .map(planeToScreen)
