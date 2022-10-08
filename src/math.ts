@@ -10,6 +10,8 @@ export type Transformation = (v: Vector3D) => Vector3D
 
 export const unitSquare: Polygon = [[0,0,0], [0,1,0], [1,1,0], [1,0,0]]
 
+export const magnitude = ([x, y ,z]: Vector3D): number => Math.sqrt(x**2 + y**2 + z**2)
+
 export const scale = (ax: number, ay: number, az: number): Transformation => ([x, y, z]) => [ax * x, ay * y, az * z]
 
 export const translate = ([tx, ty, tz]: Vector3D): Transformation => ([x, y, z]) => [x + tx, y + ty, z + tz]

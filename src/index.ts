@@ -1,4 +1,4 @@
-import { unitSquare, Object3D, compose, planeToScreen, rotateX, rotateY, scale, translate } from './math'
+import { unitSquare, Object3D, compose, rotateX, rotateY, scale, translate } from './math'
 import { render } from './render'
 
 const cube: Object3D = [
@@ -11,10 +11,10 @@ const cube: Object3D = [
 ]
 
 const transform = compose(
-  //rotateY(Math.PI / 4),
+  rotateX(Math.PI / 8),
+  rotateY(Math.PI / 4),
   scale(10, 10, 10),
-  translate([15, 10, 0]),
-  planeToScreen,
+  translate([20, 10, 0]),
 )
 
 const _cube: Object3D = cube.map(p => p.map(transform))
