@@ -1,5 +1,5 @@
-import { Object3D, compose, planeToScreen, rotateX, scale } from './math'
-import { renderPolygon } from './render'
+import { Object3D, compose, planeToScreen, rotateX, scale, translate } from './math'
+import { render } from './render'
 
 const cube: Object3D = [
   [[0,0,0], [0,1,0], [1,1,0], [1,0,0]], // front
@@ -13,9 +13,10 @@ const cube: Object3D = [
 const transform = compose(
   rotateX(Math.PI / 4),
   scale(10, 10, 10),
+  translate([15, 10, 0]),
   planeToScreen,
 )
 
 const _cube: Object3D = cube.map(p => p.map(transform))
 
-_cube.map(renderPolygon)
+render([ ..._cube ])
