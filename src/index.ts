@@ -10,6 +10,14 @@ const unitCube: Object3D = [
   unitSquare.map(compose(rotateX(Math.PI / 2), translate([0, 1, 0]))), // top
 ]
 
+const unitPyramid: Object3D = [
+  unitSquare.map(rotateX(Math.PI / 2)),
+  [[0,0,0], [0,0,1], [1/2, Math.sqrt(2)/2, 1/2]],
+  [[0,0,0], [1,0,0], [1/2, Math.sqrt(2)/2, 1/2]],
+  [[1,0,0], [1,0,1], [1/2, Math.sqrt(2)/2, 1/2]],
+  [[0,0,1], [1,0,1], [1/2, Math.sqrt(2)/2, 1/2]],
+]
+
 const cube: Object3D = unitCube.map(p => p.map(
   compose(
     rotateX(Math.PI / 8),
@@ -27,4 +35,11 @@ const cuboid: Object3D = unitCube.map(p => p.map(
   )
 ))
 
-render([...cube, ...cuboid])
+const pyramid: Object3D = unitPyramid.map(p => p.map(
+  compose(
+    scale(10, 10, 10),
+    translate([15, -10, 0]),
+  )
+))
+
+render([...cube, ...cuboid, ...pyramid])
