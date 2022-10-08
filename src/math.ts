@@ -7,7 +7,7 @@ export type Polygon = Vector3D[]
 
 export type Transformation = (v: Vector3D) => Vector3D
 
-export const unitSquare: Polygon = [[0,0,1], [0,1,1], [1,1,1], [1,0,1]]
+export const unitSquare: Polygon = [[0,0,0], [0,1,0], [1,1,0], [1,0,0]]
 
 export const scale = (ax: number, ay: number, az: number): Transformation => ([x, y, z]) => [ax * x, ay * y, az * z]
 
