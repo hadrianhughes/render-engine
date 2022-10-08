@@ -1,17 +1,17 @@
-import { Object3D, compose, planeToScreen, rotateX, scale, translate } from './math'
+import { unitSquare, Object3D, compose, planeToScreen, rotateX, rotateY, scale, translate } from './math'
 import { render } from './render'
 
 const cube: Object3D = [
-  [[0,0,0], [0,1,0], [1,1,0], [1,0,0]], // front
-  [[0,0,0], [0,1,0], [0,1,1], [0,0,1]], // left
-  [[1,0,0], [1,1,0], [1,1,1], [1,0,1]], // right
-  [[0,0,1], [0,1,1], [1,1,1], [1,0,1]], // rear
-  [[0,1,0], [0,1,1], [1,1,1], [1,1,0]], // top
-  [[0,0,0], [0,0,1], [1,0,1], [1,0,0]], // bottom
+  unitSquare, // front
+  unitSquare.map(rotateY(Math.PI / -2)), // left
+  unitSquare.map(compose(rotateY(Math.PI / -2), translate([1, 0, 0]))), // right
+  unitSquare.map(translate([0, 0, 1])), // back
+  unitSquare.map(rotateX(Math.PI / 2)), // bottom
+  unitSquare.map(compose(rotateX(Math.PI / 2), translate([0, 1, 0]))), // top
 ]
 
 const transform = compose(
-  rotateX(Math.PI / 4),
+  //rotateY(Math.PI / 4),
   scale(10, 10, 10),
   translate([15, 10, 0]),
   planeToScreen,
