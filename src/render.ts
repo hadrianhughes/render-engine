@@ -14,8 +14,6 @@ export const gridHeight = CANVAS_HEIGHT / SCREEN_INCREMENT
 canvas.width = CANVAS_WIDTH
 canvas.height = CANVAS_HEIGHT
 
-ctx.fillStyle = '#d8d8d8'
-
 export const renderPolygon = (ps: Vector3D[]) => {
   if (ps.length < 3) return
 
@@ -24,5 +22,7 @@ export const renderPolygon = (ps: Vector3D[]) => {
   ps.slice(1).forEach(([x, y]) => ctx.lineTo(x, y))
   ctx.lineTo(ps[0][0], ps[0][1])
   ctx.closePath()
+
+  ctx.fillStyle = 'hsl(' + 360 * Math.random() + ', 50%, 50%)'
   ctx.fill()
 }

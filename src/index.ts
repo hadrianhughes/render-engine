@@ -1,4 +1,4 @@
-import { Object3D, compose, planeToScreen, rotateY, scale } from './math'
+import { Object3D, compose, planeToScreen, rotateX, scale } from './math'
 import { renderPolygon } from './render'
 
 const cube: Object3D = [
@@ -11,7 +11,7 @@ const cube: Object3D = [
 ]
 
 const transform = compose(
-  rotateY(Math.PI / 4),
+  rotateX(Math.PI / 4),
   scale(10, 10, 10),
   planeToScreen,
 )
