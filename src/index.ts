@@ -37,6 +37,8 @@ const cuboid: Object3D = unitCube.map(p => p.map(
 
 const pyramid: Object3D = unitPyramid.map(p => p.map(
   compose(
+    rotateY(Math.PI / -3),
+    rotateX(Math.PI / -6),
     scale(10, 10, 10),
     translate([15, -10, 0]),
   )

@@ -34,17 +34,13 @@ export const rotateZ = (rads: number): Transformation => ([x, y, z]) => [
   z,
 ]
 
-export const planeToScreen = ([gx, gy, gz]: Vector3D): Vector3D => {
+export const projectToScreen = ([gx, gy, gz]: Vector3D): Vector2D => {
   const projMultiplier = FOCAL_DIST / (FOCAL_DIST + gz)
 
   const px = projMultiplier * gx * SCREEN_INCREMENT
   const py = projMultiplier * gy * SCREEN_INCREMENT
 
-  return [
-    CANVAS_WIDTH / 2 + px,
-    CANVAS_HEIGHT / 2 - py,
-    gz * SCREEN_INCREMENT,
-  ]
+  return [CANVAS_WIDTH / 2 + px, CANVAS_HEIGHT / 2 - py]
 }
 
 export const compose = (...ts: Transformation[]): Transformation => ts.reduce((acc, _t) => v => _t(acc(v)), v => v)

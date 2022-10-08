@@ -1,4 +1,4 @@
-import { Polygon, magnitude, planeToScreen } from './math'
+import { Polygon, magnitude, projectToScreen } from './math'
 
 export const canvas: HTMLCanvasElement = document.getElementById('root') as HTMLCanvasElement
 export const ctx = canvas.getContext('2d')
@@ -19,7 +19,7 @@ ctx.strokeStyle = '#fff'
 export const renderPolygon = (vertices: Polygon) => {
   if (vertices.length < 3) return
 
-  const projected = vertices.map(planeToScreen)
+  const projected = vertices.map(projectToScreen)
 
   ctx.beginPath()
   ctx.moveTo(projected[0][0], projected[0][1])
