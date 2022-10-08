@@ -1,7 +1,7 @@
 import { unitSquare, Object3D, compose, rotateX, rotateY, scale, translate } from './math'
 import { render } from './render'
 
-const cube: Object3D = [
+const unitCube: Object3D = [
   unitSquare, // front
   unitSquare.map(rotateY(Math.PI / -2)), // left
   unitSquare.map(compose(rotateY(Math.PI / -2), translate([1, 0, 0]))), // right
@@ -10,13 +10,21 @@ const cube: Object3D = [
   unitSquare.map(compose(rotateX(Math.PI / 2), translate([0, 1, 0]))), // top
 ]
 
-const transform = compose(
-  rotateX(Math.PI / 8),
-  rotateY(Math.PI / 4),
-  scale(10, 10, 10),
-  translate([20, 10, 0]),
-)
+const cube: Object3D = unitCube.map(p => p.map(
+  compose(
+    rotateX(Math.PI / 8),
+    rotateY(Math.PI / 4),
+    scale(10, 10, 10),
+    translate([10, 10, 0]),
+  )
+))
 
-const _cube: Object3D = cube.map(p => p.map(transform))
+const cuboid: Object3D = unitCube.map(p => p.map(
+  compose(
+    rotateY(Math.PI / 6),
+    scale(15, 10, 10),
+    translate([0, 5, 25]),
+  )
+))
 
-render([ ..._cube ])
+render([...cube, ...cuboid])
