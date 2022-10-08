@@ -14,6 +14,8 @@ export const gridHeight = CANVAS_HEIGHT / SCREEN_INCREMENT
 canvas.width = CANVAS_WIDTH
 canvas.height = CANVAS_HEIGHT
 
+ctx.strokeStyle = '#fff'
+
 export const renderPolygon = (vertices: Polygon) => {
   if (vertices.length < 3) return
 
@@ -27,6 +29,7 @@ export const renderPolygon = (vertices: Polygon) => {
 
   ctx.fillStyle = 'hsl(' + 360 * Math.random() + ', 50%, 50%)'
   ctx.fill()
+  ctx.stroke()
 }
 
 export const render = (polygons: Polygon[]) => {
