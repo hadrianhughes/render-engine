@@ -1,4 +1,4 @@
-import { Camera, Object3D } from './engine'
+import { AppState, Camera, Object3D, update } from './engine'
 import { unitSquare, compose, rotateX, rotateY, scale, add, Polygon } from './math'
 import { render } from './render'
 
@@ -56,15 +56,17 @@ const pyramid: Object3D = {
 
 const camera: Camera = {
   position: [0, 0, 0],
-  yaw: Math.PI / -8,
-  pitch: Math.PI / 6,
+  yaw: 0,
+  pitch: 0,
   roll: 0,
 }
 
-function loop() {
-  render(camera, [cube, cuboid, pyramid])
+function loop(state: AppState) {
+  render(state.camera, state.objects)
 
-  requestAnimationFrame(loop)
+  const nextState = update(state)
+
+  requestAnimationFrame(() => loop(nextState))
 }
 
-loop()
+loop({ camera, objects: [cube, cuboid, pyramid] })

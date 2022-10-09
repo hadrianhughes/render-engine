@@ -15,8 +15,6 @@ export const gridHeight = CANVAS_HEIGHT / SCREEN_INCREMENT
 canvas.width = CANVAS_WIDTH
 canvas.height = CANVAS_HEIGHT
 
-ctx.strokeStyle = '#fff'
-
 export const renderPolygon = (camera: Camera) => ({ geometry, color }: EnrichedPolygon) => {
   if (geometry.length < 3) return
 
@@ -29,11 +27,14 @@ export const renderPolygon = (camera: Camera) => ({ geometry, color }: EnrichedP
   ctx.closePath()
 
   ctx.fillStyle = color
+  ctx.strokeStyle = '#fff'
   ctx.fill()
   ctx.stroke()
 }
 
 export const render = (camera: Camera, objects: Object3D[]) => {
+  canvas.width = CANVAS_WIDTH
+
   const polygons: EnrichedPolygon[] = objects
     .flatMap(o => o.geometry
       .map(p => ({ geometry: p, color: o.color }))

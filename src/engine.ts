@@ -1,4 +1,4 @@
-import { Vector3D, Polygon } from './math'
+import { Vector3D, Polygon, rotateY } from './math'
 
 export type Camera = {
   position: Vector3D;
@@ -16,3 +16,16 @@ export type EnrichedPolygon = {
   geometry: Polygon;
   color: string;
 }
+
+export type AppState = {
+  camera: Camera;
+  objects: Object3D[];
+}
+
+export const update = (state: AppState): AppState => ({
+  ...state,
+  objects: state.objects.map(o => ({
+    color: o.color,
+    geometry: o.geometry.map(p => p.map(rotateY(Math.PI / 50))),
+  }))
+})
