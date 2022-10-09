@@ -1,14 +1,14 @@
 import { Camera } from './engine'
-import { unitSquare, Object3D, compose, rotateX, rotateY, scale, translate } from './math'
+import { unitSquare, Object3D, compose, rotateX, rotateY, scale, add } from './math'
 import { render } from './render'
 
 const unitCube: Object3D = [
   unitSquare, // front
   unitSquare.map(rotateY(Math.PI / -2)), // left
-  unitSquare.map(compose(rotateY(Math.PI / -2), translate([1, 0, 0]))), // right
-  unitSquare.map(translate([0, 0, 1])), // back
+  unitSquare.map(compose(rotateY(Math.PI / -2), add([1, 0, 0]))), // right
+  unitSquare.map(add([0, 0, 1])), // back
   unitSquare.map(rotateX(Math.PI / 2)), // bottom
-  unitSquare.map(compose(rotateX(Math.PI / 2), translate([0, 1, 0]))), // top
+  unitSquare.map(compose(rotateX(Math.PI / 2), add([0, 1, 0]))), // top
 ]
 
 const unitPyramid: Object3D = [
@@ -24,7 +24,7 @@ const cube: Object3D = unitCube.map(p => p.map(
     rotateX(Math.PI / 8),
     rotateY(Math.PI / 4),
     scale(10, 10, 10),
-    translate([10, 10, 0]),
+    add([10, 10, 0]),
   )
 ))
 
@@ -32,7 +32,7 @@ const cuboid: Object3D = unitCube.map(p => p.map(
   compose(
     rotateY(Math.PI / 6),
     scale(15, 10, 10),
-    translate([0, 5, 25]),
+    add([0, 5, 25]),
   )
 ))
 
@@ -41,14 +41,14 @@ const pyramid: Object3D = unitPyramid.map(p => p.map(
     rotateY(Math.PI / -3),
     rotateX(Math.PI / -6),
     scale(10, 10, 10),
-    translate([15, -10, 0]),
+    add([15, -10, 0]),
   )
 ))
 
 const camera: Camera = {
-  position: [10, 0, 2],
+  position: [5, 0, 0],
   xyAngle: 0,
-  xzAngle: 0,
+  xzAngle: Math.PI * 3/2,
 }
 
 render(camera, [...cube, ...cuboid, ...pyramid])

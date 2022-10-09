@@ -14,8 +14,11 @@ export const unitSquare: Polygon = [[0,0,0], [0,1,0], [1,1,0], [1,0,0]]
 export const magnitude = ([x, y ,z]: Vector3D): number => Math.sqrt(x**2 + y**2 + z**2)
 
 export const scale = (ax: number, ay: number, az: number): Transformation => ([x, y, z]) => [ax * x, ay * y, az * z]
+export const multiply = (a: number): Transformation => scale(a, a, a)
 
-export const translate = ([tx, ty, tz]: Vector3D): Transformation => ([x, y, z]) => [x + tx, y + ty, z + tz]
+
+export const add = ([a, b, c]: Vector3D): Transformation => ([x, y, z]) => [x + a, y + b, z + c]
+export const subtract = ([a, b, c]: Vector3D): Transformation => ([x, y, z]) => [x - a, y - b, z - c]
 
 export const rotateX = (rads: number): Transformation => ([x, y, z]) => [
   x,
@@ -35,17 +38,16 @@ export const rotateZ = (rads: number): Transformation => ([x, y, z]) => [
   z,
 ]
 
-export const projectToScreen = (camera: Camera) => ([gx, gy, gz]: Vector3D): Vector2D => {
-  const cameraX = camera.position[0] * SCREEN_INCREMENT
-  const cameraY = camera.position[1] * SCREEN_INCREMENT
-  const cameraZ = camera.position[2] * SCREEN_INCREMENT
+export const projectToScreen = (camera: Camera) => (v: Vector3D): Vector2D => {
+  const _camera = multiply(SCREEN_INCREMENT)(camera.position)
 
-  const projMultiplier = FOCAL_DIST / (FOCAL_DIST + gz - cameraZ)
+  const translated = subtract(_camera)(v)
 
-  const px = projMultiplier * gx * SCREEN_INCREMENT - cameraX
-  const py = projMultiplier * gy * SCREEN_INCREMENT - cameraY
+  const projMultiplier = FOCAL_DIST / (FOCAL_DIST + translated[2])
 
-  return [CANVAS_WIDTH / 2 + px, CANVAS_HEIGHT / 2 - py]
+  const p = multiply(projMultiplier * SCREEN_INCREMENT)(translated)
+
+  return [CANVAS_WIDTH / 2 + p[0], CANVAS_HEIGHT / 2 - p[1]]
 }
 
 export const compose = (...ts: Transformation[]): Transformation => ts.reduce((acc, _t) => v => _t(acc(v)), v => v)
