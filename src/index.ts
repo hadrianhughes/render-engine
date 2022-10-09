@@ -46,9 +46,10 @@ const pyramid: Object3D = unitPyramid.map(p => p.map(
 ))
 
 const camera: Camera = {
-  position: [5, 0, 0],
-  xyAngle: 0,
-  xzAngle: Math.PI * 3/2,
+  position: [0, 0, 0],
+  yaw: Math.PI / -8,
+  pitch: Math.PI / 6,
+  roll: 0,
 }
 
 render(camera, [...cube, ...cuboid, ...pyramid])
