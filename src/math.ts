@@ -37,6 +37,9 @@ export const rotateZ = (rads: number): Transformation => ([x, y, z]) => [
   z,
 ]
 
+export const rotate = (yaw: number, pitch: number, roll: number): Transformation =>
+  compose(rotateX(pitch), rotateY(yaw), rotateZ(roll))
+
 export const projectToScreen = (camera: Camera) => (v: Vector3D): Vector2D => {
   const _camera = multiply(SCREEN_INCREMENT)(camera.position)
 
@@ -57,3 +60,13 @@ export const projectToScreen = (camera: Camera) => (v: Vector3D): Vector2D => {
 }
 
 export const compose = (...ts: Transformation[]): Transformation => ts.reduce((acc, _t) => v => _t(acc(v)), v => v)
+
+export const affine =
+  (translation: Vector3D, yaw: number, pitch: number, roll: number) =>
+  (t: Transformation): Transformation => compose(
+    add(translation),
+    rotate(yaw, pitch, roll),
+    t,
+    rotate(-1 * yaw, -1 * pitch, -1 * roll),
+    subtract(translation)
+  )

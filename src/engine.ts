@@ -1,4 +1,5 @@
-import { Vector3D, Polygon, rotateY } from './math'
+import { Inputs } from './input'
+import { affine, compose, Vector3D, Polygon, add, subtract, Transformation, multiply } from './math'
 
 export type Camera = {
   position: Vector3D;
@@ -22,10 +23,42 @@ export type AppState = {
   objects: Object3D[];
 }
 
-export const update = (state: AppState): AppState => ({
-  ...state,
-  objects: state.objects.map(o => ({
-    color: o.color,
-    geometry: o.geometry.map(p => p.map(rotateY(Math.PI / 50))),
-  }))
-})
+export const SPEED = 0.1
+export const ROTATION = Math.PI / 100
+
+const nextRotation = (inputPositive: boolean, inputNegative: boolean, current: number): number => {
+  if (inputPositive && !inputNegative) return current + ROTATION
+
+  if (inputNegative && !inputPositive) return current - ROTATION
+
+  return current
+}
+
+export const update = (state: AppState, inputs: Inputs): AppState => {
+  const _yaw = nextRotation(inputs.ArrowLeft, inputs.ArrowRight, state.camera.yaw)
+  const _pitch = nextRotation(inputs.ArrowUp, inputs.ArrowDown, state.camera.pitch)
+
+  const cameraTransforms: Transformation[] = []
+
+  const fromCamera = affine(multiply(-1)(state.camera.position), _yaw, _pitch, 0)
+
+  if (inputs.w) cameraTransforms.push(fromCamera(add([0, 0, SPEED])))
+  
+  if (inputs.s) cameraTransforms.push(fromCamera(subtract([0, 0, SPEED])))
+
+  if (inputs.a) cameraTransforms.push(fromCamera(subtract([SPEED, 0, 0])))
+
+  if (inputs.d) cameraTransforms.push(fromCamera(add([SPEED, 0, 0])))
+
+  const _position = compose(...cameraTransforms)(state.camera.position)
+
+  return {
+    ...state,
+    camera: {
+      position: _position,
+      yaw: _yaw,
+      pitch: _pitch,
+      roll: state.camera.roll,
+    },
+  }
+}

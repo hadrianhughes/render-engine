@@ -1,3 +1,4 @@
+import { InputManager } from './input'
 import { AppState, Camera, Object3D, update } from './engine'
 import { unitSquare, compose, rotateX, rotateY, scale, add, Polygon } from './math'
 import { render } from './render'
@@ -61,12 +62,20 @@ const camera: Camera = {
   roll: 0,
 }
 
-function loop(state: AppState) {
-  render(state.camera, state.objects)
+function loop() {
+  const inputManager = new InputManager()
 
-  const nextState = update(state)
+  const initialState: AppState = { camera, objects: [cube, cuboid, pyramid] }
 
-  requestAnimationFrame(() => loop(nextState))
+  function _loop(state: AppState) {
+    render(state.camera, state.objects)
+
+    const nextState = update(state, inputManager.inputs)
+
+    requestAnimationFrame(() => _loop(nextState))
+  }
+
+  _loop(initialState)
 }
 
-loop({ camera, objects: [cube, cuboid, pyramid] })
+loop()
