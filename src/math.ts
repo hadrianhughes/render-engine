@@ -5,7 +5,6 @@ export type Vector2D = [number, number]
 export type Vector3D = [number, number, number]
 
 export type Polygon = Vector3D[]
-export type Object3D = Polygon[]
 
 export type Transformation = (v: Vector3D) => Vector3D
 
