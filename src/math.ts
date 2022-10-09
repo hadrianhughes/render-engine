@@ -1,3 +1,4 @@
+import { Camera } from './engine'
 import { CANVAS_HEIGHT, CANVAS_WIDTH, SCREEN_INCREMENT, FOCAL_DIST } from './render'
 
 export type Vector2D = [number, number]
@@ -34,11 +35,15 @@ export const rotateZ = (rads: number): Transformation => ([x, y, z]) => [
   z,
 ]
 
-export const projectToScreen = ([gx, gy, gz]: Vector3D): Vector2D => {
-  const projMultiplier = FOCAL_DIST / (FOCAL_DIST + gz)
+export const projectToScreen = (camera: Camera) => ([gx, gy, gz]: Vector3D): Vector2D => {
+  const cameraX = camera.position[0] * SCREEN_INCREMENT
+  const cameraY = camera.position[1] * SCREEN_INCREMENT
+  const cameraZ = camera.position[2] * SCREEN_INCREMENT
 
-  const px = projMultiplier * gx * SCREEN_INCREMENT
-  const py = projMultiplier * gy * SCREEN_INCREMENT
+  const projMultiplier = FOCAL_DIST / (FOCAL_DIST + gz - cameraZ)
+
+  const px = projMultiplier * gx * SCREEN_INCREMENT - cameraX
+  const py = projMultiplier * gy * SCREEN_INCREMENT - cameraY
 
   return [CANVAS_WIDTH / 2 + px, CANVAS_HEIGHT / 2 - py]
 }

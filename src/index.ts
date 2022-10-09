@@ -1,3 +1,4 @@
+import { Camera } from './engine'
 import { unitSquare, Object3D, compose, rotateX, rotateY, scale, translate } from './math'
 import { render } from './render'
 
@@ -44,4 +45,10 @@ const pyramid: Object3D = unitPyramid.map(p => p.map(
   )
 ))
 
-render([...cube, ...cuboid, ...pyramid])
+const camera: Camera = {
+  position: [10, 0, 2],
+  xyAngle: 0,
+  xzAngle: 0,
+}
+
+render(camera, [...cube, ...cuboid, ...pyramid])

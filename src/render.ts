@@ -1,3 +1,4 @@
+import { Camera } from './engine'
 import { Polygon, magnitude, projectToScreen } from './math'
 
 export const canvas: HTMLCanvasElement = document.getElementById('root') as HTMLCanvasElement
@@ -16,10 +17,10 @@ canvas.height = CANVAS_HEIGHT
 
 ctx.strokeStyle = '#fff'
 
-export const renderPolygon = (vertices: Polygon) => {
+export const renderPolygon = (camera: Camera) => (vertices: Polygon) => {
   if (vertices.length < 3) return
 
-  const projected = vertices.map(projectToScreen)
+  const projected = vertices.map(projectToScreen(camera))
 
   ctx.beginPath()
   ctx.moveTo(projected[0][0], projected[0][1])
@@ -32,7 +33,7 @@ export const renderPolygon = (vertices: Polygon) => {
   ctx.stroke()
 }
 
-export const render = (polygons: Polygon[]) => {
+export const render = (camera: Camera, polygons: Polygon[]) => {
   const sortedFurthest = polygons.sort((p1, p2) => {
     const zAvg1 = p1.reduce((acc, v) => acc + v[2], 0) / p1.length
     const zAvg2 = p2.reduce((acc, v) => acc + v[2], 0) / p2.length
@@ -59,5 +60,5 @@ export const render = (polygons: Polygon[]) => {
     return 0
   })
 
-  sortedFurthest.forEach(renderPolygon)
+  sortedFurthest.forEach(renderPolygon(camera))
 }
