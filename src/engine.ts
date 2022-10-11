@@ -15,6 +15,7 @@ export type Object3D = {
 
 export type EnrichedPolygon = {
   geometry: Polygon;
+  cameraGeometry: Polygon;
   color: string;
 }
 

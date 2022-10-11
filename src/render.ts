@@ -1,5 +1,5 @@
 import { Camera, Object3D, EnrichedPolygon } from './engine'
-import { magnitude, projectToScreen } from './math'
+import { magnitude, projectToScreen, compose, subtract, rotate } from './math'
 
 export const canvas: HTMLCanvasElement = document.getElementById('root') as HTMLCanvasElement
 export const ctx = canvas.getContext('2d')
@@ -36,13 +36,15 @@ export const render = (camera: Camera, objects: Object3D[]) => {
   canvas.width = CANVAS_WIDTH
 
   const polygons: EnrichedPolygon[] = objects
-    .flatMap(o => o.geometry
-      .map(p => ({ geometry: p, color: o.color }))
-    )
+    .flatMap(o => o.geometry.map(p => ({
+      geometry: p,
+      cameraGeometry: p.map(compose(subtract(camera.position), rotate(-1 * camera.yaw, -1 * camera.pitch, 0))),
+      color: o.color,
+    })))
 
   const sortedFurthest = polygons.sort((p1, p2) => {
-    const zAvg1 = p1.geometry.reduce((acc, v) => acc + v[2], 0) / p1.geometry.length
-    const zAvg2 = p2.geometry.reduce((acc, v) => acc + v[2], 0) / p2.geometry.length
+    const zAvg1 = p1.cameraGeometry.reduce((acc, v) => acc + v[2], 0) / p1.cameraGeometry.length
+    const zAvg2 = p2.cameraGeometry.reduce((acc, v) => acc + v[2], 0) / p2.cameraGeometry.length
 
     if (zAvg1 > zAvg2) {
       return -1
@@ -52,8 +54,8 @@ export const render = (camera: Camera, objects: Object3D[]) => {
       return 1
     }
 
-    const mAvg1 = p1.geometry.reduce((acc, v) => acc + magnitude(v), 0) / p1.geometry.length
-    const mAvg2 = p2.geometry.reduce((acc, v) => acc + magnitude(v), 0) / p2.geometry.length
+    const mAvg1 = p1.cameraGeometry.reduce((acc, v) => acc + magnitude(v), 0) / p1.cameraGeometry.length
+    const mAvg2 = p2.cameraGeometry.reduce((acc, v) => acc + magnitude(v), 0) / p2.cameraGeometry.length
 
     if (mAvg1 > mAvg2) {
       return -1
