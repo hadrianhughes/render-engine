@@ -1,5 +1,5 @@
 import { Camera, Object3D, EnrichedPolygon } from './engine'
-import { magnitude, projectToScreen, compose, subtract, rotate } from './math'
+import { magnitude, multiply, add, compose, subtract, rotate, Vector2D, Vector3D } from './math'
 
 export const canvas: HTMLCanvasElement = document.getElementById('root') as HTMLCanvasElement
 export const ctx = canvas.getContext('2d')
@@ -14,6 +14,23 @@ export const gridHeight = CANVAS_HEIGHT / SCREEN_INCREMENT
 
 canvas.width = CANVAS_WIDTH
 canvas.height = CANVAS_HEIGHT
+
+const projectToScreen = (camera: Camera) => (v: Vector3D): Vector2D => {
+  const _camera = multiply(SCREEN_INCREMENT)(camera.position)
+
+  const cameraAdjusted = subtract(_camera)(v)
+  const rotated = compose(
+    add([0, 0, FOCAL_DIST]),
+    rotate(camera.yaw, camera.pitch, camera.roll),
+    subtract([0, 0, FOCAL_DIST]),
+  )(cameraAdjusted)
+
+  const projMultiplier = FOCAL_DIST / (FOCAL_DIST + rotated[2])
+
+  const p = multiply(projMultiplier * SCREEN_INCREMENT)(rotated)
+
+  return [CANVAS_WIDTH / 2 + p[0], CANVAS_HEIGHT / 2 - p[1]]
+}
 
 export const renderPolygon = (camera: Camera) => ({ geometry, color }: EnrichedPolygon) => {
   if (geometry.length < 3) return
