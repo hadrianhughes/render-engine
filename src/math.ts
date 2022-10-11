@@ -46,9 +46,7 @@ export const projectToScreen = (camera: Camera) => (v: Vector3D): Vector2D => {
   const cameraAdjusted = subtract(_camera)(v)
   const rotated = compose(
     add([0, 0, FOCAL_DIST]),
-    rotateX(camera.pitch),
-    rotateY(camera.yaw),
-    rotateZ(camera.roll),
+    rotate(camera.yaw, camera.pitch, camera.roll),
     subtract([0, 0, FOCAL_DIST]),
   )(cameraAdjusted)
 
