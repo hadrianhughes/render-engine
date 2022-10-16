@@ -1,6 +1,3 @@
-import { Camera } from './engine'
-import { CANVAS_HEIGHT, CANVAS_WIDTH, SCREEN_INCREMENT, FOCAL_DIST } from './render'
-
 export type Vector2D = [number, number]
 export type Vector3D = [number, number, number]
 
@@ -21,8 +18,8 @@ export const subtract = ([a, b, c]: Vector3D): Transformation => ([x, y, z]) => 
 
 export const rotateX = (rads: number): Transformation => ([x, y, z]) => [
   x,
-  y * Math.cos(rads) - z*Math.sin(rads),
-  y * Math.sin(rads) + z*Math.cos(rads),
+  y * Math.cos(rads) - z * Math.sin(rads),
+  y * Math.sin(rads) + z * Math.cos(rads),
 ]
 
 export const rotateY = (rads: number): Transformation => ([x, y, z]) => [
