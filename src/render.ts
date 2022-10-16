@@ -1,5 +1,5 @@
 import { Camera, Object3D, EnrichedPolygon } from './engine'
-import { magnitude, multiply, add, compose, subtract, rotate, Vector2D, Vector3D } from './math'
+import { affine, magnitude, multiply, compose, subtract, rotate, Vector2D, Vector3D } from './math'
 
 export const canvas: HTMLCanvasElement = document.getElementById('root') as HTMLCanvasElement
 export const ctx = canvas.getContext('2d')
@@ -16,20 +16,15 @@ canvas.width = CANVAS_WIDTH
 canvas.height = CANVAS_HEIGHT
 
 const projectToScreen = (camera: Camera) => (v: Vector3D): Vector2D => {
-  const _camera = multiply(SCREEN_INCREMENT)(camera.position)
+  const _v = compose(
+    subtract(camera.position),
+    affine([0, 0, FOCAL_DIST])(rotate(camera.yaw, camera.pitch, camera.roll)),
+  )(v)
 
-  const cameraAdjusted = subtract(_camera)(v)
-  const rotated = compose(
-    add([0, 0, FOCAL_DIST]),
-    rotate(camera.yaw, camera.pitch, camera.roll),
-    subtract([0, 0, FOCAL_DIST]),
-  )(cameraAdjusted)
+  const projMultiplier = FOCAL_DIST / (FOCAL_DIST + _v[2])
+  const p = multiply(projMultiplier)(_v)
 
-  const projMultiplier = FOCAL_DIST / (FOCAL_DIST + rotated[2])
-
-  const p = multiply(projMultiplier * SCREEN_INCREMENT)(rotated)
-
-  return [CANVAS_WIDTH / 2 + p[0], CANVAS_HEIGHT / 2 - p[1]]
+  return [gridWidth / 2 + p[0], gridHeight / 2 - p[1]]
 }
 
 export const renderPolygon = (camera: Camera) => ({ geometry, color }: EnrichedPolygon) => {
@@ -38,9 +33,9 @@ export const renderPolygon = (camera: Camera) => ({ geometry, color }: EnrichedP
   const projected = geometry.map(projectToScreen(camera))
 
   ctx.beginPath()
-  ctx.moveTo(projected[0][0], projected[0][1])
-  projected.slice(1).forEach(([x, y]) => ctx.lineTo(x, y))
-  ctx.lineTo(projected[0][0], projected[0][1])
+  ctx.moveTo(SCREEN_INCREMENT * projected[0][0], SCREEN_INCREMENT * projected[0][1])
+  projected.slice(1).forEach(([x, y]) => ctx.lineTo(SCREEN_INCREMENT * x, SCREEN_INCREMENT * y))
+  ctx.lineTo(SCREEN_INCREMENT * projected[0][0], SCREEN_INCREMENT * projected[0][1])
   ctx.closePath()
 
   ctx.fillStyle = color

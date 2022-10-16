@@ -32,22 +32,22 @@ export const rotateY = (rads: number): Transformation => ([x, y, z]) => [
 ]
 
 export const rotateZ = (rads: number): Transformation => ([x, y, z]) => [
-  x * Math.cos(rads) - y*Math.sin(rads),
-  x * Math.sin(rads) + y*Math.cos(rads),
+  x * Math.cos(rads) - y * Math.sin(rads),
+  x * Math.sin(rads) + y * Math.cos(rads),
   z,
 ]
 
 export const rotate = (yaw: number, pitch: number, roll: number): Transformation =>
-  compose(rotateX(pitch), rotateY(yaw), rotateZ(roll))
+  compose(rotateZ(roll), rotateY(yaw), rotateX(pitch))
 
 export const compose = (...ts: Transformation[]): Transformation => ts.reduce((acc, _t) => v => _t(acc(v)), v => v)
 
 export const affine =
-  (translation: Vector3D, yaw: number, pitch: number, roll: number) =>
+  (translation: Vector3D, yaw?: number, pitch?: number, roll?: number) =>
   (t: Transformation): Transformation => compose(
     add(translation),
-    rotate(yaw, pitch, roll),
+    rotate(yaw || 0, pitch || 0, roll || 0),
     t,
-    rotate(-1 * yaw, -1 * pitch, -1 * roll),
+    rotate(-1 * yaw || 0, -1 * pitch || 0, -1 * roll || 0),
     subtract(translation)
   )
