@@ -15,16 +15,20 @@ export const gridHeight = CANVAS_HEIGHT / SCREEN_INCREMENT
 canvas.width = CANVAS_WIDTH
 canvas.height = CANVAS_HEIGHT
 
-const projectToScreen = (camera: Camera) => (v: Vector3D): Vector2D => {
-  const _v = compose(
+const projectToScreen = (camera: Camera) => {
+  const fromCamera = compose(
     subtract(camera.position),
     affine([0, 0, FOCAL_DIST])(rotate(camera.yaw, camera.pitch, camera.roll)),
-  )(v)
+  )
 
-  const projMultiplier = FOCAL_DIST / (FOCAL_DIST + _v[2])
-  const p = multiply(projMultiplier)(_v)
+  return (v: Vector3D): Vector2D => {
+    const _v = fromCamera(v)
 
-  return [gridWidth / 2 + p[0], gridHeight / 2 - p[1]]
+    const projMultiplier = FOCAL_DIST / (FOCAL_DIST + _v[2])
+    const p = multiply(projMultiplier)(_v)
+
+    return [gridWidth / 2 + p[0], gridHeight / 2 - p[1]]
+  }
 }
 
 export const renderPolygon = (camera: Camera) => ({ geometry, color }: EnrichedPolygon) => {
