@@ -11,10 +11,27 @@
     canvas {
       background-color: #000;
     }
+
+    #info {
+      left: 0;
+      position: absolute;
+      top: 0;
+    }
+
+    span {
+      color: white;
+      display: block;
+      font-family: sans-serif;
+    }
   </style>
 </head>
 <body>
   <canvas id="root"></canvas>
+  <div id="info">
+    <span id="position">Position</span>
+    <span id="yaw">Yaw</span>
+    <span id="pitch">Pitch</span>
+  </div>
   <script src="bundle.js"></script>
 </body>
 </html>

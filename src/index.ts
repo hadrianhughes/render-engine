@@ -70,6 +70,10 @@ function loop() {
   function _loop(state: AppState) {
     render(state.camera, state.objects)
 
+    document.getElementById('position').innerHTML = `Position: [${Math.round(state.camera.position[0] * 100) / 100}, ${Math.round(state.camera.position[1] * 100) / 100}, ${Math.round(state.camera.position[2] * 100) / 100}]`
+    document.getElementById('yaw').innerHTML = `Yaw: ${Math.trunc(state.camera.yaw * 180/Math.PI)}&deg;`
+    document.getElementById('pitch').innerHTML = `Pitch: ${Math.trunc(state.camera.pitch * 180/Math.PI)}&deg;`
+
     const nextState = update(state, inputManager.inputs)
 
     requestAnimationFrame(() => _loop(nextState))
