@@ -7,7 +7,7 @@ export const ctx = canvas.getContext('2d')
 export const CANVAS_WIDTH = 800
 export const CANVAS_HEIGHT = 600
 export const SCREEN_INCREMENT = 8
-export const FOCAL_DIST = 50
+export const FOCAL_DIST = 85
 
 export const gridWidth = CANVAS_WIDTH / SCREEN_INCREMENT
 export const gridHeight = CANVAS_HEIGHT / SCREEN_INCREMENT
