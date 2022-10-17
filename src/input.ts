@@ -1,41 +1,44 @@
-export type Inputs = {
-  ArrowUp: boolean;
-  ArrowDown: boolean;
-  ArrowLeft: boolean;
-  ArrowRight: boolean;
-  w: boolean;
-  a: boolean;
-  s: boolean;
-  d: boolean;
-}
+export const InputsKeys: KeyboardEvent['code'][] = [
+  'ArrowUp',
+  'ArrowDown',
+  'ArrowLeft',
+  'ArrowRight',
+  'KeyW',
+  'KeyA',
+  'KeyS',
+  'KeyD',
+  'ShiftLeft',
+  'Space',
+]
+
+export type Inputs = { [key in KeyboardEvent['code']]: boolean }
 
 export interface IInputManager {
   inputs: Inputs;
 }
 
 export class InputManager implements IInputManager {
-  inputs = {
-    ArrowUp: false,
-    ArrowDown: false,
-    ArrowLeft: false,
-    ArrowRight: false,
-    w: false,
-    a: false,
-    s: false,
-    d: false,
-  }
+  inputs: Inputs
 
   constructor() {
+    this.initState()
+
     window.addEventListener('keydown', e => {
-      if (e.key in this.inputs) {
-        this.inputs[e.key as keyof Inputs] = true
+      if (InputsKeys.includes(e.code)) {
+        e.preventDefault()
+        this.inputs[e.code as keyof Inputs] = true
       }
     })
 
     window.addEventListener('keyup', e => {
-      if (e.key in this.inputs) {
-        this.inputs[e.key as keyof Inputs] = false
+      if (InputsKeys.includes(e.code)) {
+        e.preventDefault()
+        this.inputs[e.code as keyof Inputs] = false
       }
     })
+  }
+
+  initState() {
+    this.inputs = InputsKeys.reduce((acc, key) => ({ ...acc, [key]: false }), {} as Inputs)
   }
 }
