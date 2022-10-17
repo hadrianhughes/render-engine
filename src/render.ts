@@ -54,7 +54,7 @@ export const render = (camera: Camera, objects: Object3D[]) => {
   const polygons: EnrichedPolygon[] = objects
     .flatMap(o => o.geometry.map(p => ({
       geometry: p,
-      cameraGeometry: p.map(compose(subtract(camera.position), rotate(-1 * camera.yaw, -1 * camera.pitch, 0))),
+      cameraGeometry: p.map(compose(subtract(camera.position), rotate(camera.yaw, camera.pitch, 0))),
       color: o.color,
     })))
 
