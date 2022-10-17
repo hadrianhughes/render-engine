@@ -24,7 +24,7 @@ export type AppState = {
   objects: Object3D[];
 }
 
-export const SPEED = 0.1
+export const SPEED = 0.3
 export const ROTATION = Math.PI / 100
 
 const nextRotation = (inputPositive: boolean, inputNegative: boolean, current: number): number => {
