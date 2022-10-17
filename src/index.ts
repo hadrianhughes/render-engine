@@ -3,6 +3,8 @@ import { AppState, Camera, Object3D, update } from './engine'
 import { unitSquare, compose, rotateX, rotateY, scale, add, Polygon } from './math'
 import { render } from './render'
 
+const debugMode = process.env.DEBUG_MODE
+
 const unitCube: Polygon[] = [
   unitSquare, // front
   unitSquare.map(rotateY(Math.PI / -2)), // left
@@ -62,6 +64,13 @@ const camera: Camera = {
   roll: 0,
 }
 
+function updateDebugInfo(state: AppState) {
+  document.getElementById('info').style.display = 'block'
+  document.getElementById('position').innerHTML = `Position: [${Math.round(state.camera.position[0] * 100) / 100}, ${Math.round(state.camera.position[1] * 100) / 100}, ${Math.round(state.camera.position[2] * 100) / 100}]`
+  document.getElementById('yaw').innerHTML = `Yaw: ${Math.trunc(state.camera.yaw * 180/Math.PI)}&deg;`
+  document.getElementById('pitch').innerHTML = `Pitch: ${Math.trunc(state.camera.pitch * 180/Math.PI)}&deg;`
+}
+
 function loop() {
   const inputManager = new InputManager()
 
@@ -70,9 +79,7 @@ function loop() {
   function _loop(state: AppState) {
     render(state.camera, state.objects)
 
-    document.getElementById('position').innerHTML = `Position: [${Math.round(state.camera.position[0] * 100) / 100}, ${Math.round(state.camera.position[1] * 100) / 100}, ${Math.round(state.camera.position[2] * 100) / 100}]`
-    document.getElementById('yaw').innerHTML = `Yaw: ${Math.trunc(state.camera.yaw * 180/Math.PI)}&deg;`
-    document.getElementById('pitch').innerHTML = `Pitch: ${Math.trunc(state.camera.pitch * 180/Math.PI)}&deg;`
+    if (debugMode) updateDebugInfo(state)
 
     const nextState = update(state, inputManager.inputs)
 

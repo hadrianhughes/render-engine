@@ -1,5 +1,7 @@
+require('dotenv').config()
 const path = require('path')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const webpack = require('webpack')
 
 module.exports = {
   entry: './src/index.ts',
@@ -24,6 +26,9 @@ module.exports = {
       patterns: [
         { from: 'public' },
       ],
+    }),
+    new webpack.DefinePlugin({
+      'process.env.DEBUG_MODE': JSON.stringify(parseInt(process.env.DEBUG_MODE) === 1),
     }),
   ],
   mode: 'development',
