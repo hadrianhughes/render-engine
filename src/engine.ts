@@ -59,6 +59,10 @@ export const update = (state: AppState, inputs: Inputs): AppState => {
 
   if (inputs.KeyD) cameraTransforms.push(fromCamera(add([SPEED, 0, 0])))
 
+  if (inputs.ShiftLeft) cameraTransforms.push(subtract([0, SPEED, 0]))
+
+  if (inputs.Space) cameraTransforms.push(add([0, SPEED, 0]))
+
   const _position = compose(...cameraTransforms)(state.camera.position)
 
   return {
