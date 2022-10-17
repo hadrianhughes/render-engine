@@ -1,5 +1,5 @@
 import { Inputs } from './input'
-import { affine, compose, Vector3D, Polygon, add, subtract, Transformation, multiply } from './math'
+import { compose, Vector3D, Polygon, add, subtract, Transformation, rotateX, rotateY } from './math'
 
 export type Camera = {
   position: Vector3D;
@@ -41,7 +41,15 @@ export const update = (state: AppState, inputs: Inputs): AppState => {
 
   const cameraTransforms: Transformation[] = []
 
-  const fromCamera = affine(multiply(-1)(state.camera.position), _yaw, _pitch, 0)
+  const fromCamera = (t: Transformation) => compose(
+    subtract(state.camera.position),
+    rotateY(_yaw),
+    rotateX(_pitch),
+    t,
+    rotateX(-1 * _pitch),
+    rotateY(-1 * _yaw),
+    add(state.camera.position),
+  )
 
   if (inputs.w) cameraTransforms.push(fromCamera(add([0, 0, SPEED])))
   
