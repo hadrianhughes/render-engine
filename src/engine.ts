@@ -1,5 +1,5 @@
 import { Inputs } from './input'
-import { compose, Vector3D, Polygon, add, subtract, Transformation, rotateX, rotateY } from './math'
+import { compose, Vector3D, Polygon, add, subtract, Transformation, rotateX, rotateY, multiply } from './math'
 
 export type Camera = {
   position: Vector3D;
@@ -27,6 +27,15 @@ export type AppState = {
 export const SPEED = 0.3
 export const ROTATION = Math.PI / 100
 
+const keyDirectionChanges: { [key in KeyboardEvent['code']]: Vector3D } = {
+  'KeyW': [0, 0, 1],
+  'KeyS': [0, 0, -1],
+  'KeyA': [-1, 0, 0],
+  'KeyD': [1, 0, 0],
+  'KeyX': [0, -1, 0],
+  'Space': [0, 1, 0],
+}
+
 const nextRotation = (inputPositive: boolean, inputNegative: boolean, current: number): number => {
   if (inputPositive && !inputNegative) return current + ROTATION
 
@@ -39,8 +48,6 @@ export const update = (state: AppState, inputs: Inputs): AppState => {
   const _yaw = nextRotation(inputs.ArrowLeft, inputs.ArrowRight, state.camera.yaw)
   const _pitch = nextRotation(inputs.ArrowUp, inputs.ArrowDown, state.camera.pitch)
 
-  const cameraTransforms: Transformation[] = []
-
   const fromCamera = (t: Transformation) => compose(
     subtract(state.camera.position),
     rotateY(_yaw),
@@ -51,17 +58,18 @@ export const update = (state: AppState, inputs: Inputs): AppState => {
     add(state.camera.position),
   )
 
-  if (inputs.KeyW) cameraTransforms.push(fromCamera(add([0, 0, SPEED])))
-  
-  if (inputs.KeyS) cameraTransforms.push(fromCamera(subtract([0, 0, SPEED])))
+  const cameraTransforms: Transformation[] =
+    Object.keys(keyDirectionChanges)
+      .reduce((acc, key) => {
+        if (inputs[key]) {
+          return [
+            ...acc,
+            fromCamera(add(multiply(SPEED)(keyDirectionChanges[key]))),
+          ]
+        }
 
-  if (inputs.KeyA) cameraTransforms.push(fromCamera(subtract([SPEED, 0, 0])))
-
-  if (inputs.KeyD) cameraTransforms.push(fromCamera(add([SPEED, 0, 0])))
-
-  if (inputs.KeyX) cameraTransforms.push(subtract([0, SPEED, 0]))
-
-  if (inputs.Space) cameraTransforms.push(add([0, SPEED, 0]))
+        return acc
+      }, [])
 
   const _position = compose(...cameraTransforms)(state.camera.position)
 
