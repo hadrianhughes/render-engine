@@ -7,7 +7,7 @@ export const InputsKeys: KeyboardEvent['code'][] = [
   'KeyA',
   'KeyS',
   'KeyD',
-  'ShiftLeft',
+  'KeyX',
   'Space',
 ]
 
