@@ -37,7 +37,6 @@ const cube: Object3D = {
 const cuboid: Object3D = {
   geometry: unitCube.map(p => p.map(
     compose(
-      rotateY(Math.PI / 6),
       scale(15, 10, 10),
       add([0, 5, 25]),
     )
