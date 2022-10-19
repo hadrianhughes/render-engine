@@ -4,8 +4,8 @@ import { affine, magnitude, multiply, compose, subtract, rotate, Vector2D, Vecto
 export const canvas: HTMLCanvasElement = document.getElementById('root') as HTMLCanvasElement
 export const ctx = canvas.getContext('2d')
 
-export const CANVAS_WIDTH = 800
-export const CANVAS_HEIGHT = 600
+export const CANVAS_WIDTH = window.innerWidth
+export const CANVAS_HEIGHT = window.innerHeight
 export const SCREEN_INCREMENT = 8
 export const FOCAL_DIST = 85
 
