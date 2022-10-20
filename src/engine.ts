@@ -62,10 +62,12 @@ export const update = (state: AppState, inputs: Inputs): AppState => {
     Object.keys(keyDirectionChanges)
       .reduce((acc, key) => {
         if (inputs[key]) {
-          return [
-            ...acc,
-            fromCamera(add(multiply(SPEED)(keyDirectionChanges[key]))),
-          ]
+          const change = add(multiply(SPEED)(keyDirectionChanges[key]))
+          if (['KeyX', 'Space'].includes(key)) {
+            return [...acc, change]
+          }
+
+          return [...acc, fromCamera(change)]
         }
 
         return acc
