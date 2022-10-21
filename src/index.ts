@@ -1,7 +1,7 @@
-import { InputManager } from './lib/input'
-import { AppState, Camera, Object3D, update } from './lib/engine'
-import { unitSquare, compose, rotateX, rotateY, scale, add, Polygon } from './lib/math'
-import { render } from './lib/render'
+import { InputManager } from '@lib/input'
+import { AppState, Camera, Object3D, update } from '@lib/engine'
+import { unitSquare, compose, rotateX, rotateY, scale, add, Polygon } from '@lib/math'
+import { render } from '@lib/render'
 
 const debugMode = process.env.DEBUG_MODE
 

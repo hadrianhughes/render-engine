@@ -1,5 +1,5 @@
-import { Inputs } from './input'
-import { compose, Vector3D, Polygon, add, subtract, Transformation, rotateX, rotateY, multiply } from './math'
+import { Inputs } from '@lib/input'
+import { compose, Vector3D, Polygon, add, subtract, Transformation, rotateX, rotateY, multiply } from '@lib/math'
 
 export type Camera = {
   position: Vector3D;

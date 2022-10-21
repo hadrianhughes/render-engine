@@ -20,6 +20,9 @@ module.exports = {
   },
   resolve: {
     extensions: ['.ts', '.js'],
+    alias: {
+      '@lib': path.resolve(__dirname, 'src/lib/'),
+    },
   },
   plugins: [
     new CopyWebpackPlugin({

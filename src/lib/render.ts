@@ -1,5 +1,5 @@
-import { Camera, Object3D, EnrichedPolygon } from './engine'
-import { affine, magnitude, multiply, compose, subtract, rotate, Vector2D, Vector3D } from './math'
+import { Camera, Object3D, EnrichedPolygon } from '@lib/engine'
+import { affine, magnitude, multiply, compose, subtract, rotate, Vector2D, Vector3D } from '@lib/math'
 
 export const canvas: HTMLCanvasElement = document.getElementById('root') as HTMLCanvasElement
 export const ctx = canvas.getContext('2d')
