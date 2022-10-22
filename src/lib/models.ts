@@ -1,5 +1,6 @@
 import OBJFile from 'obj-file-parser'
 import { Polygon, Vector3D } from '@lib/math'
+import cubeFile from '@models/cube.obj'
 
 export const loadModel = (file: string): Polygon[] => {
   const { models } = new OBJFile(file).parse()
@@ -13,4 +14,8 @@ export const loadModel = (file: string): Polygon[] => {
   return faces.map(
     ({ vertices: vs }) => vs.map(({ vertexIndex }) => _vertices[vertexIndex - 1])
   )
+}
+
+export const primitives = {
+  cube: loadModel(cubeFile),
 }
