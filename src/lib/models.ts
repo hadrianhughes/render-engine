@@ -1,6 +1,7 @@
 import OBJFile from 'obj-file-parser'
 import { Polygon, Vector3D } from '@lib/math'
 import cubeFile from '@models/cube.obj'
+import pyramidFile from '@models/pyramid.obj'
 
 export const loadModel = (file: string): Polygon[] => {
   const { models } = new OBJFile(file).parse()
@@ -18,4 +19,5 @@ export const loadModel = (file: string): Polygon[] => {
 
 export const primitives = {
   cube: loadModel(cubeFile),
+  pyramid: loadModel(pyramidFile),
 }

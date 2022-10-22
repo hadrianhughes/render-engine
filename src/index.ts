@@ -1,18 +1,10 @@
 import { InputManager } from '@lib/input'
 import { AppState, Camera, Object3D, update } from '@lib/engine'
 import { primitives } from '@lib/models'
-import { unitSquare, compose, rotateX, rotateY, scale, add, Polygon } from '@lib/math'
+import { compose, rotateX, rotateY, scale, add } from '@lib/math'
 import { render } from '@lib/render'
 
 const debugMode = process.env.DEBUG_MODE
-
-const unitPyramid: Polygon[] = [
-  unitSquare.map(rotateX(Math.PI / 2)),
-  [[0,0,0], [0,0,1], [1/2, Math.sqrt(2)/2, 1/2]],
-  [[0,0,0], [1,0,0], [1/2, Math.sqrt(2)/2, 1/2]],
-  [[1,0,0], [1,0,1], [1/2, Math.sqrt(2)/2, 1/2]],
-  [[0,0,1], [1,0,1], [1/2, Math.sqrt(2)/2, 1/2]],
-]
 
 const cube: Object3D = {
   geometry: primitives.cube.map(p => p.map(
@@ -37,7 +29,7 @@ const cuboid: Object3D = {
 }
 
 const pyramid: Object3D = {
-  geometry: unitPyramid.map(p => p.map(
+  geometry: primitives.pyramid.map(p => p.map(
     compose(
       rotateY(Math.PI / -3),
       rotateX(Math.PI / -6),
