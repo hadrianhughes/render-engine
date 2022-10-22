@@ -2,6 +2,8 @@ import { InputManager } from '@lib/input'
 import { AppState, Camera, Object3D, update } from '@lib/engine'
 import { unitSquare, compose, rotateX, rotateY, scale, add, Polygon } from '@lib/math'
 import { render } from '@lib/render'
+import _cube from '@models/cube.obj'
+console.log(_cube)
 
 const debugMode = process.env.DEBUG_MODE
 
