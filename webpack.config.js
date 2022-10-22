@@ -16,10 +16,15 @@ module.exports = {
         use: 'ts-loader',
         exclude: /node_modules/,
       },
+      {
+        test: /\.obj$/,
+        type: 'asset/source',
+        exclude: /node_modules/,
+      },
     ],
   },
   resolve: {
-    extensions: ['.ts', '.js'],
+    extensions: ['.ts', '.js', '.obj'],
     alias: {
       '@lib': path.resolve(__dirname, 'src/lib/'),
     },
