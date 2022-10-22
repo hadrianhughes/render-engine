@@ -27,6 +27,7 @@ module.exports = {
     extensions: ['.ts', '.js', '.obj'],
     alias: {
       '@lib': path.resolve(__dirname, 'src/lib/'),
+      '@models': path.resolve(__dirname, 'src/models/'),
     },
   },
   plugins: [
