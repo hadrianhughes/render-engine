@@ -1,20 +1,13 @@
 import { InputManager } from '@lib/input'
 import { AppState, Camera, Object3D, update } from '@lib/engine'
+import { loadModel } from '@lib/models'
 import { unitSquare, compose, rotateX, rotateY, scale, add, Polygon } from '@lib/math'
 import { render } from '@lib/render'
-import _cube from '@models/cube.obj'
-console.log(_cube)
+import cubeFile from '@models/cube.obj'
 
 const debugMode = process.env.DEBUG_MODE
 
-const unitCube: Polygon[] = [
-  unitSquare, // front
-  unitSquare.map(rotateY(Math.PI / -2)), // left
-  unitSquare.map(compose(rotateY(Math.PI / -2), add([1, 0, 0]))), // right
-  unitSquare.map(add([0, 0, 1])), // back
-  unitSquare.map(rotateX(Math.PI / 2)), // bottom
-  unitSquare.map(compose(rotateX(Math.PI / 2), add([0, 1, 0]))), // top
-]
+const unitCube = loadModel(cubeFile)
 
 const unitPyramid: Polygon[] = [
   unitSquare.map(rotateX(Math.PI / 2)),
